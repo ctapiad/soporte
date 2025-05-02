@@ -10,7 +10,7 @@ import com.fullstack.soporte.model.entity.SoporteEntity;
 public interface SoporteRepository extends JpaRepository<SoporteEntity, Integer>{
 
     SoporteEntity findByNombre(String nombre);
-    Boolean existByNombre(String nombre);
+    Boolean existsByNombre(String nombre);
     void deleteById(int id);
     Boolean findByNombreAndId(String nombre , int id);
     

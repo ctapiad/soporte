@@ -16,18 +16,31 @@ public class SoporteService {
     @Autowired
     private SoporteRepository soporteRepository;
     
-    private final List<Soporte> soportes = new ArrayList<>();
+    
 
     public SoporteService(){
-        soportes.add(new Soporte(1,"nombre","detalle","estado"));
+     
     }
 
     public List<Soporte> getAllSoportes(){
+        //soporteRepository.findAll();
+        List<SoporteEntity> listaSoporte = (List<SoporteEntity>) soporteRepository.findAll();
+        List<Soporte> soportes = new ArrayList<>();
+        
+        for(SoporteEntity soporte : listaSoporte){
+            Soporte nuevoSoporte = new Soporte();
+            nuevoSoporte.setId(soporte.getId());
+            nuevoSoporte.setNombre(soporte.getNombre());
+            nuevoSoporte.setDetalle(soporte.getDetalle());
+            nuevoSoporte.setEstado(soporte.getEstado());
+            soportes.add(nuevoSoporte);
+        }
         return soportes;
     }
 
     public Soporte obtenerSoporte(int id){
-        for(Soporte sop : soportes){
+        List<Soporte> soportes2 = getAllSoportes();
+        for(Soporte sop : soportes2){
             if(sop.getId() == id){
                 return sop;
             }
@@ -37,13 +50,14 @@ public class SoporteService {
 
     public String crearSoporte(Soporte soporte){
         try {
-            Boolean estado = soporteRepository.existByNombre(soporte.getNombre());
+            Boolean estado = soporteRepository.existsByNombre(soporte.getNombre());
             if(estado != true){
                 SoporteEntity soporteNuevo = new SoporteEntity();
                 soporteNuevo.setId(soporte.getId());
                 soporteNuevo.setNombre(soporte.getNombre());
                 soporteNuevo.setDetalle(soporte.getDetalle());
                 soporteNuevo.setEstado(soporte.getEstado());
+                soporteRepository.save(soporteNuevo);
                 return "Soporte creado con exito";
             }
             return "El soporte ya existe";
@@ -54,9 +68,10 @@ public class SoporteService {
 
     
     public String borrarSoporte(int id){
-        for(Soporte sop : soportes){
+        List<Soporte> soportes3 = getAllSoportes();
+        for(Soporte sop : soportes3){
             if(sop.getId() == id){
-                soportes.remove(sop);
+                soportes3.remove(sop);
                 return "Soporte eliminado con exito";
         }
     }

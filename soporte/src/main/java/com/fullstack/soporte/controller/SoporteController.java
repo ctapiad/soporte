@@ -1,5 +1,6 @@
 package com.fullstack.soporte.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fullstack.soporte.model.Soporte;
+import com.fullstack.soporte.model.entity.SoporteEntity;
 import com.fullstack.soporte.service.SoporteService;
 
 @RestController
@@ -24,12 +26,12 @@ public class SoporteController {
 
     @GetMapping("/soportes")
     public List<Soporte> mostrarSoportes(){
-        return   accionesSoporte.getAllSoportes();
+        return   soporteservice1.getAllSoportes();
     }
 
     @GetMapping("/soportes/{id}")
     public Soporte obtenerSoporte(@PathVariable int id){
-        return accionesSoporte.obtenerSoporte(id);
+        return soporteservice1.obtenerSoporte(id);
     }
 
     @PostMapping("/soportes")
@@ -39,7 +41,7 @@ public class SoporteController {
 
     @DeleteMapping("/soportes/{id}")
     public String borrarSoporte(@PathVariable int id){
-        return accionesSoporte.borrarSoporte(id);
+        return soporteservice1.borrarSoporte(id);
     }
 
 
