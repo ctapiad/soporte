@@ -24,8 +24,11 @@ public class SoporteController {
     SoporteService accionesSoporte = new SoporteService();
 
     @GetMapping("/soportes")
-    public List<Soporte> mostrarSoportes(){
-        return   soporteservice1.getAllSoportes();
+    public ResponseEntity <List<Soporte>>mostrarSoportes(){
+        if(soporteservice1.getAllSoportes() != null){
+            return ResponseEntity.ok(soporteservice1.getAllSoportes());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/soportes/{id}")
@@ -38,17 +41,26 @@ public class SoporteController {
 
     @PostMapping("/soportes")
     public ResponseEntity<String> crearSoporte(@RequestBody Soporte soporte){
-        return ResponseEntity.ok(soporteservice1.crearSoporte(soporte));
+        if (soporteservice1.crearSoporte(soporte) != null) {
+            return ResponseEntity.ok(soporteservice1.crearSoporte(soporte));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/soportes/{id}")
-    public String borrarSoporte(@PathVariable int id){
-        return soporteservice1.borrarSoporte(id);
+    public ResponseEntity<String> borrarSoporte(@PathVariable int id){
+        if(soporteservice1.borrarSoporte(id) != null){
+            return ResponseEntity.ok(soporteservice1.borrarSoporte(id));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/soportes")
     public ResponseEntity<String> modificarSoporte(@RequestBody Soporte soporte){
-        return ResponseEntity.ok(soporteservice1.modificarSoporte(soporte));
+        if(soporteservice1.modificarSoporte(soporte) != null){
+            return ResponseEntity.ok(soporteservice1.modificarSoporte(soporte));
+        }
+        return ResponseEntity.notFound().build();
     }
 
 
