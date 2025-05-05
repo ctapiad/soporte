@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fullstack.soporte.model.Soporte;
 import com.fullstack.soporte.service.SoporteService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 public class SoporteController {
 
@@ -23,6 +25,7 @@ public class SoporteController {
 
     SoporteService accionesSoporte = new SoporteService();
 
+    @Operation (summary = "Este endpoint permite obtener todos los soportes")
     @GetMapping("/soportes")
     public ResponseEntity <List<Soporte>>mostrarSoportes(){
         if(soporteservice1.getAllSoportes() != null){

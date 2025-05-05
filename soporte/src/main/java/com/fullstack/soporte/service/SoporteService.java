@@ -99,7 +99,7 @@ public class SoporteService {
                 soporteRepository.save(soporteNuevo);
                 return "Soporte creado con exito";
             }
-            return "El soporte ya existe";
+            return null;
         } catch (Exception e) {
             return "Error al crear el soporte";
         }
