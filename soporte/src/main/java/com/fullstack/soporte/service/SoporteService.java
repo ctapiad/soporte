@@ -1,6 +1,8 @@
 package com.fullstack.soporte.service;
 
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +39,11 @@ public class SoporteService {
             for (SoporteEntity soporte : listaSoporte) {
                 Soporte nuevoSoporte = new Soporte();
                 nuevoSoporte.setId(soporte.getId());
+                nuevoSoporte.setUser_id(soporte.getUser_id());
                 nuevoSoporte.setNombre(soporte.getNombre());
                 nuevoSoporte.setDetalle(soporte.getDetalle());
                 nuevoSoporte.setEstado(soporte.getEstado());
+                nuevoSoporte.setFecha_creacion(soporte.getFecha_creacion());
                 soportes.add(nuevoSoporte);
             }
     
@@ -71,9 +75,11 @@ public class SoporteService {
             // Convertir SoporteEntity a Soporte
             Soporte soporte = new Soporte();
             soporte.setId(soporteEntity.getId());
+            soporte.setUser_id(soporteEntity.getUser_id());
             soporte.setNombre(soporteEntity.getNombre());
             soporte.setDetalle(soporteEntity.getDetalle());
             soporte.setEstado(soporteEntity.getEstado());
+            soporte.setFecha_creacion(soporteEntity.getFecha_creacion());
     
             return soporte;
     
@@ -93,15 +99,19 @@ public class SoporteService {
             if(estado != true){
                 SoporteEntity soporteNuevo = new SoporteEntity();
                 soporteNuevo.setId(soporte.getId());
+                soporteNuevo.setUser_id(soporte.getUser_id());
                 soporteNuevo.setNombre(soporte.getNombre());
                 soporteNuevo.setDetalle(soporte.getDetalle());
                 soporteNuevo.setEstado(soporte.getEstado());
+                soporteNuevo.setFecha_creacion(new Date(System.currentTimeMillis()));
                 soporteRepository.save(soporteNuevo);
                 return "Soporte creado con exito";
             }
-            return null;
+            else{
+                return null;
+            }
         } catch (Exception e) {
-            return "Error al crear el soporte";
+            return null; //"Error al crear el soporte";
         }
     }
 
@@ -110,12 +120,15 @@ public class SoporteService {
         try {
             if (soporteRepository.existsById(id)) {
                 soporteRepository.deleteById(id);
-                return "Soporte eliminado con éxito";
+                System.out.println("El soporte con el ID " + id + " ha sido eliminado");
+                return "";
             } else {
-                return "El soporte con el ID especificado no existe";
+                System.out.println("El soporte con el ID especificado no existe");
+                return null;
             }
         } catch (Exception e) {
-            return "Error al eliminar el soporte: " + e.getMessage();
+            System.out.println("Error al eliminar el soporte: " + e.getMessage());
+            return null;
         }
     }
 
@@ -124,19 +137,25 @@ public class SoporteService {
             if (soporteRepository.existsById(soporte.getId())) {
                 SoporteEntity soporteExistente = soporteRepository.findById(soporte.getId()).orElse(null);
                 if (soporteExistente != null) {
+                    soporteExistente.setUser_id(soporte.getUser_id());
                     soporteExistente.setNombre(soporte.getNombre());
                     soporteExistente.setDetalle(soporte.getDetalle());
                     soporteExistente.setEstado(soporte.getEstado());
+                    soporteExistente.setFecha_creacion(soporte.getFecha_creacion());
                     soporteRepository.save(soporteExistente);
-                    return "Soporte editado con éxito";
+                    System.out.println("Soporte editado con éxito");
+                    return "";
                 } else {
-                    return "El soporte no existe";
+                    System.out.println("El soporte no existe");
+                    return null;
                 }
             } else {
-                return "El soporte con el ID especificado no existe";
+                System.out.println("El soporte con el ID especificado no existe");
+                return null;
             }
         } catch (Exception e) {
-            return "Error al editar el soporte: " + e.getMessage();
+            System.out.println("Error al editar el soporte: " + e.getMessage());
+            return null;
         }
     }
 
