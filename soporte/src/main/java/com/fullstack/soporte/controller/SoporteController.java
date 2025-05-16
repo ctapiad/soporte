@@ -44,8 +44,9 @@ public class SoporteController {
 
     @PostMapping("/soportes")
     public ResponseEntity<String> crearSoporte(@RequestBody Soporte soporte){
-        if (soporteservice1.crearSoporte(soporte) != null) {
-            return ResponseEntity.ok(soporteservice1.crearSoporte(soporte));
+        String resultado = soporteservice1.crearSoporte(soporte);
+        if (resultado != null) {
+            return ResponseEntity.ok(resultado);
         }
         return ResponseEntity.notFound().build();
     }

@@ -7,8 +7,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.fullstack.soporte.model.Soporte;
+import com.fullstack.soporte.model.dto.UsuarioDto;
 import com.fullstack.soporte.model.entity.SoporteEntity;
 import com.fullstack.soporte.repository.SoporteRepository;
 
@@ -17,6 +19,9 @@ public class SoporteService {
 
     @Autowired
     private SoporteRepository soporteRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
     
     
 
@@ -39,7 +44,7 @@ public class SoporteService {
             for (SoporteEntity soporte : listaSoporte) {
                 Soporte nuevoSoporte = new Soporte();
                 nuevoSoporte.setId(soporte.getId());
-                nuevoSoporte.setUser_id(soporte.getUser_id());
+                nuevoSoporte.setUser_rut(soporte.getUser_rut());
                 nuevoSoporte.setNombre(soporte.getNombre());
                 nuevoSoporte.setDetalle(soporte.getDetalle());
                 nuevoSoporte.setEstado(soporte.getEstado());
@@ -75,7 +80,7 @@ public class SoporteService {
             // Convertir SoporteEntity a Soporte
             Soporte soporte = new Soporte();
             soporte.setId(soporteEntity.getId());
-            soporte.setUser_id(soporteEntity.getUser_id());
+            soporte.setUser_rut(soporteEntity.getUser_rut());
             soporte.setNombre(soporteEntity.getNombre());
             soporte.setDetalle(soporteEntity.getDetalle());
             soporte.setEstado(soporteEntity.getEstado());
@@ -93,27 +98,34 @@ public class SoporteService {
         
     }
 
-    public String crearSoporte(Soporte soporte){
-        try {
-            Boolean estado = soporteRepository.existsByNombre(soporte.getNombre());
-            if(estado != true){
-                SoporteEntity soporteNuevo = new SoporteEntity();
-                soporteNuevo.setId(soporte.getId());
-                soporteNuevo.setUser_id(soporte.getUser_id());
-                soporteNuevo.setNombre(soporte.getNombre());
-                soporteNuevo.setDetalle(soporte.getDetalle());
-                soporteNuevo.setEstado(soporte.getEstado());
-                soporteNuevo.setFecha_creacion(new Date(System.currentTimeMillis()));
-                soporteRepository.save(soporteNuevo);
-                return "Soporte creado con exito";
-            }
-            else{
+public String crearSoporte(Soporte soporte){
+    try {
+        Boolean estado = soporteRepository.existsById(soporte.getId());
+        if(estado != true){
+            String usuarioUrl = "http://localhost:8080/obtenerUsuario/" + soporte.getUser_rut();
+            UsuarioDto usuario = restTemplate.getForObject(usuarioUrl, UsuarioDto.class);
+            if (usuario == null || usuario.getRut() == null) {
+                System.out.println("Usuario no encontrado");
                 return null;
             }
-        } catch (Exception e) {
-            return null; //"Error al crear el soporte";
+
+            SoporteEntity soporteNuevo = new SoporteEntity();
+            soporteNuevo.setUser_rut(usuario.getRut());
+            soporteNuevo.setNombre(soporte.getNombre());
+            soporteNuevo.setDetalle(soporte.getDetalle());
+            soporteNuevo.setEstado(soporte.getEstado());
+            soporteNuevo.setFecha_creacion(new Date(System.currentTimeMillis()));
+            soporteRepository.save(soporteNuevo);
+            return "Soporte creado con exito";
+        } else {
+            System.out.println("El soporte ya existe");
+            return null;
         }
+    } catch (Exception e) {
+        System.out.println("Error al crear el soporte: " + e.getMessage());
+        return null;
     }
+}
 
     
     public String borrarSoporte(int id) {
@@ -137,7 +149,7 @@ public class SoporteService {
             if (soporteRepository.existsById(soporte.getId())) {
                 SoporteEntity soporteExistente = soporteRepository.findById(soporte.getId()).orElse(null);
                 if (soporteExistente != null) {
-                    soporteExistente.setUser_id(soporte.getUser_id());
+                    soporteExistente.setUser_rut(soporte.getUser_rut());
                     soporteExistente.setNombre(soporte.getNombre());
                     soporteExistente.setDetalle(soporte.getDetalle());
                     soporteExistente.setEstado(soporte.getEstado());
@@ -158,5 +170,6 @@ public class SoporteService {
             return null;
         }
     }
+
 
 }

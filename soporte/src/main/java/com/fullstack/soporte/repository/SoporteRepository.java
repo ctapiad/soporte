@@ -13,6 +13,8 @@ public interface SoporteRepository extends JpaRepository<SoporteEntity, Integer>
     Boolean existsByNombre(String nombre);
     void deleteById(int id);
     Boolean findByNombreAndId(String nombre , int id);
+    Boolean existsById(int id);
+    Boolean existsByNombreAndId(String nombre , int id);
     
 
     

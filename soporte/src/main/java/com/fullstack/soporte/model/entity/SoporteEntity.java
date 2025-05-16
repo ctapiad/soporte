@@ -22,7 +22,7 @@ public class SoporteEntity {
     private int id;
 
     @Column(nullable = false)
-    private int user_id;
+    private String user_rut;
 
     private String nombre;
     private String detalle;

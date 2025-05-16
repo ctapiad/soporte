@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Soporte {
 
-    private int id,user_id;
-    private String nombre,detalle,estado;
+    private int id;
+    private String nombre,detalle,estado,user_rut;
     private Date fecha_creacion;
     
 
