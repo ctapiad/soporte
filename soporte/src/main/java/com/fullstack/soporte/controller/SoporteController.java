@@ -25,15 +25,17 @@ public class SoporteController {
 
     SoporteService accionesSoporte = new SoporteService();
 
-    @Operation (summary = "Este endpoint permite obtener todos los soportes")
+    @Operation (summary = "Mostrar todos los soportes")
     @GetMapping("/soportes")
-    public ResponseEntity <List<Soporte>>mostrarSoportes(){
-        if(soporteservice1.getAllSoportes() != null){
-            return ResponseEntity.ok(soporteservice1.getAllSoportes());
+    public ResponseEntity<List<Soporte>> mostrarSoportes() {
+        List<Soporte> soportes = soporteservice1.getAllSoportes();
+        if (soportes == null || soportes.isEmpty()) {
+            return ResponseEntity.noContent().build(); // O puedes usar notFound() si prefieres 404
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(soportes);
     }
 
+    @Operation (summary = "Mostrar un soporte por id")
     @GetMapping("/soportes/{id}")
     public ResponseEntity<Soporte> obtenerSoporte(@PathVariable int id){
         if (soporteservice1.obtenerSoporte(id) != null) {
@@ -42,6 +44,7 @@ public class SoporteController {
         return ResponseEntity.notFound().build();
     }
 
+    @Operation (summary = "Crear un soporte")
     @PostMapping("/soportes")
     public ResponseEntity<String> crearSoporte(@RequestBody Soporte soporte){
         String resultado = soporteservice1.crearSoporte(soporte);
@@ -51,6 +54,7 @@ public class SoporteController {
         return ResponseEntity.notFound().build();
     }
 
+    @Operation (summary = "Eliminar un soporte por id")
     @DeleteMapping("/soportes/{id}")
     public ResponseEntity<String> borrarSoporte(@PathVariable int id){
         if(soporteservice1.borrarSoporte(id) != null){
@@ -59,6 +63,7 @@ public class SoporteController {
         return ResponseEntity.notFound().build();
     }
 
+    @Operation (summary = "Modificar un soporte")
     @PutMapping("/soportes")
     public ResponseEntity<String> modificarSoporte(@RequestBody Soporte soporte){
         if(soporteservice1.modificarSoporte(soporte) != null){

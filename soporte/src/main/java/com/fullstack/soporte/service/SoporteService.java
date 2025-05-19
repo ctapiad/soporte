@@ -55,13 +55,11 @@ public class SoporteService {
             return soportes;
     
         } catch (IllegalArgumentException e) {
-            // Manejo de errores de validación
             System.err.println("Error de validación: " + e.getMessage());
-            return new ArrayList<>(); // Devuelve una lista vacía
+            return new ArrayList<>();
         } catch (Exception e) {
-            // Manejo de errores generales
             System.err.println("Error al obtener los soportes: " + e.getMessage());
-            return new ArrayList<>(); // Devuelve una lista vacía
+            return new ArrayList<>();
         }
     }
 
