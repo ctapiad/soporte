@@ -57,10 +57,11 @@ public class SoporteController {
     @Operation (summary = "Eliminar un soporte por id")
     @DeleteMapping("/soportes/{id}")
     public ResponseEntity<String> borrarSoporte(@PathVariable int id){
-        if(soporteservice1.borrarSoporte(id) != null){
-            return ResponseEntity.ok(soporteservice1.borrarSoporte(id));
-        }
+        String resultado = soporteservice1.borrarSoporte(id);
+            if (resultado == null) {
         return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(resultado);
     }
 
     @Operation (summary = "Modificar un soporte")

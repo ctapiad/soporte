@@ -128,10 +128,10 @@ public String crearSoporte(Soporte soporte){
     
     public String borrarSoporte(int id) {
         try {
-            if (soporteRepository.existsById(id)) {
+            Boolean estado = soporteRepository.existsById(id);
+                if(estado == true){
                 soporteRepository.deleteById(id);
-                System.out.println("El soporte con el ID " + id + " ha sido eliminado");
-                return "";
+                return "Soporte eliminado con éxito";
             } else {
                 System.out.println("El soporte con el ID especificado no existe");
                 return null;
