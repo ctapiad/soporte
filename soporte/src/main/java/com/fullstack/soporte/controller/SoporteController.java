@@ -30,7 +30,7 @@ public class SoporteController {
     public ResponseEntity<List<Soporte>> mostrarSoportes() {
         List<Soporte> soportes = soporteservice1.getAllSoportes();
         if (soportes == null || soportes.isEmpty()) {
-            return ResponseEntity.noContent().build(); // O puedes usar notFound() si prefieres 404
+            return ResponseEntity.noContent().build(); 
         }
         return ResponseEntity.ok(soportes);
     }
@@ -49,9 +49,9 @@ public class SoporteController {
     public ResponseEntity<String> crearSoporte(@RequestBody Soporte soporte){
         String resultado = soporteservice1.crearSoporte(soporte);
         if (resultado != null) {
-            return ResponseEntity.ok(resultado);
+            return ResponseEntity.status(201).body(resultado);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().body("Error al crear el soporte. Verifica los datos proporcionados.");
     }
 
     @Operation (summary = "Eliminar un soporte por id")
@@ -70,7 +70,7 @@ public class SoporteController {
         if(soporteservice1.modificarSoporte(soporte) != null){
             return ResponseEntity.ok(soporteservice1.modificarSoporte(soporte));
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().body("Error al modificar el soporte. Verifica los datos proporcionados.");
     }
 
 
