@@ -148,6 +148,7 @@ public String crearSoporte(Soporte soporte){
                 SoporteEntity soporteExistente = soporteRepository.findById(soporte.getId()).orElse(null);
                 if (soporteExistente != null) {
                     //soporteExistente.setUser_rut(soporte.getUser_rut());
+                    //
                     soporteExistente.setNombre(soporte.getNombre());
                     soporteExistente.setDetalle(soporte.getDetalle());
                     soporteExistente.setEstado(soporte.getEstado());
