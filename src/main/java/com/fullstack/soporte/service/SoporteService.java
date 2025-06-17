@@ -100,7 +100,7 @@ public String crearSoporte(Soporte soporte){
     try {
         Boolean estado = soporteRepository.existsById(soporte.getId());
         if(estado != true){
-            String usuarioUrl = "http://http://3.227.212.68:8080/obtenerUsuario/" + soporte.getUser_rut();
+            String usuarioUrl = "http://54.88.178.51:8080/obtenerUsuario/" + soporte.getUser_rut();
             UsuarioDto usuario = restTemplate.getForObject(usuarioUrl, UsuarioDto.class);
             if (usuario == null || usuario.getRut() == null) {
                 System.out.println("Usuario no encontrado");
